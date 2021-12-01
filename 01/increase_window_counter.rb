@@ -26,6 +26,6 @@ class IncreaseWindowCounter
   end
 end
 
-puts "Part 1: #{IncreaseWindowCounter.run(window_size: 3, entries_file: "report.txt")}"
+puts "Part 2: #{IncreaseWindowCounter.run(window_size: 3, entries_file: "report.txt")}"
 
 
