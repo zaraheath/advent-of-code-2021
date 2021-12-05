@@ -1,9 +1,10 @@
 require 'byebug'
 
 class LinesOverlap
-  attr_reader :coordinates_file
-  def initialize(coordinates_file:)
+  attr_reader :coordinates_file, :diagonal
+  def initialize(coordinates_file:, diagonal: false)
     @coordinates_file = coordinates_file
+    @diagonal = diagonal
   end
 
   def get
@@ -31,6 +32,21 @@ class LinesOverlap
         min.upto(max) do |x|
           coordinates << [x, y1]
         end
+      elsif diagonal
+        #diagonal line
+        if x1 > x2 && y1 > y2
+          # drecrement bothm 
+          [x1.downto(x2).to_a, y1.downto(y2).to_a].transpose.each{|a| coordinates << a}
+        elsif x1 > x2 && y1 < y2
+          # decrement x, increment y
+          [x1.downto(x2).to_a, y1.upto(y2).to_a].transpose.each{|a| coordinates << a}
+        elsif x1 < x2 && y1 < y2
+          # increment both
+          [x1.upto(x2).to_a, y1.upto(y2).to_a].transpose.each{|a| coordinates << a}
+        elsif x1 < x2 && y1 > y2
+          # increment x, decrement y
+          [x1.upto(x2).to_a, y1.downto(y2).to_a].transpose.each{|a| coordinates << a}
+        end
       end
     end
     diagram = []
@@ -47,5 +63,6 @@ class LinesOverlap
 end
 
 puts "Part 1: #{LinesOverlap.new(coordinates_file: "coordinates.txt").get}"
+puts "Part 2: #{LinesOverlap.new(coordinates_file: "coordinates.txt", diagonal: true).get}"
 
 
